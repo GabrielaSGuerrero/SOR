@@ -1,4 +1,3 @@
-
 #include <stdio.h>      // libreria estandar
 #include <stdlib.h>     // para usar exit y funciones de la libreria standard
 #include <string.h>
@@ -45,6 +44,7 @@ void* imprimirAccion(void *data, char *accionIn) {
 	int i;
 	for(i = 0; i < sizeArray; i ++){
 		//pregunto si la accion del array es igual a la pasada por parametro (si es igual la funcion strcmp devuelve cero)
+		//printf("HOLA-%s%s-\n",mydata->pasos_param[i].accion,accionIn);
 		if(strcmp(mydata->pasos_param[i].accion, accionIn) == 0){
 		printf("\tEquipo %d - Acción %s \n " , mydata->equipo_param, mydata->pasos_param[i].accion);
 		//calculo la longitud del array de ingredientes
@@ -57,7 +57,8 @@ void* imprimirAccion(void *data, char *accionIn) {
 				if(strlen(mydata->pasos_param[i].ingredientes[h]) != 0) {
 							printf("\tEquipo %d ingrediente  %d : %s \n",mydata->equipo_param,h,mydata->pasos_param[i].ingredientes[h]);
 				}
-			}
+			} 
+		printf(" \n");
 		}
 	}
 }
@@ -69,7 +70,7 @@ void* cortar1(void *data) {
     //Pregunto si puedo ejecutar
     sem_wait(&mydata->semaforos_param.sem_C1);
 	//creo el nombre de la accion de la funcion 
-	char *accion = "cortar";
+	char *accion = "cortar\n";
 	
 	//llamo a la funcion imprimir le paso el struct y la accion de la funcion
 	imprimirAccion(mydata,accion);
@@ -83,7 +84,7 @@ void* cortar1(void *data) {
 void* mezclar(void *data){
 struct parametro *mydata = data;
    sem_wait(&mydata->semaforos_param.sem_mezclar);
-	char *accion = "mezclar";
+	char *accion = "mezclar\n";
 	
 	imprimirAccion(mydata,accion);
 	usleep( 20000 );
@@ -98,7 +99,7 @@ void* salar(void *data){
     
     sem_wait(&mydata->semaforos_param.sem_S);
   
-	char *accion = "salar";
+	char *accion = "salar\n";
 	imprimirAccion(mydata,accion);
 	usleep( 20000 );
 	
@@ -117,7 +118,7 @@ void* cocinar(void *data){
     
     sem_wait(&mydata->semaforos_param.sem_P);
     
-	char *accion = "cocinar";
+	char *accion = "cocinar\n";
 	imprimirAccion(mydata,accion);
 	usleep( 3000000 );
 	
@@ -133,7 +134,7 @@ void* hornear(void *data){
     
     sem_wait(&mydata->semaforos_param.sem_H);
     
-	char *accion = "hornear";
+	char *accion = "hornear\n";
 	imprimirAccion(mydata,accion);
 	usleep( 5000000 );
     
@@ -146,7 +147,7 @@ void* cortar2(void *data){
     
     sem_wait(&mydata->semaforos_param.sem_C2);
     
-	char *accion = "cortar2";
+	char *accion = "cortar2\n";
 	imprimirAccion(mydata,accion);
 	usleep( 20000 );
 	
@@ -200,39 +201,43 @@ void* ejecutarReceta(void *i) {
 	pthread_data->semaforos_param.mutex_3 = mutex_3;
 	
 	//levanto datos del archivo
-    char a [LIMITE];     char cadena2 [LIMITE];
+    //char a [LIMITE];     
+    char cadena2 [LIMITE];
     char cadena3 [LIMITE];
     FILE* fichero;
     fichero = fopen("Receta.txt", "rt");
-    fgets (a, LIMITE, fichero);
-    fgets (cadena2, LIMITE, fichero);
-    fgets (cadena3, LIMITE, fichero);
+    fgets (pthread_data->pasos_param[0].accion, LIMITE, fichero);
+    fgets (pthread_data->pasos_param[1].accion, LIMITE, fichero);
+    fgets (pthread_data->pasos_param[2].accion, LIMITE, fichero);
+    fgets (pthread_data->pasos_param[3].accion, LIMITE, fichero);
+    fgets (pthread_data->pasos_param[4].accion, LIMITE, fichero);
+    fgets (pthread_data->pasos_param[5].accion, LIMITE, fichero);
     fclose(fichero);
-    printf ("Cadena1 %s\n", a); printf ("Cadena2 %s\n", cadena2); printf ("Cadena 3%s\n", cadena3);
+    //printf ("Cadena1 %s\n", pthread_data->pasos_param[0].accion); printf ("Cadena2 %s\n", cadena2); printf ("Cadena 3%s\n", cadena3);
  
 
 	//seteo las acciones y los ingredientes (Faltan acciones e ingredientes) ¿Se ve hardcodeado no? ¿Les parece bien?
-     	strcpy(pthread_data->pasos_param[0].accion, a);
+     	//strcpy(pthread_data->pasos_param[0].accion, a);
 	strcpy(pthread_data->pasos_param[0].ingredientes[0], "ajo");
         strcpy(pthread_data->pasos_param[0].ingredientes[1], "perejil");
  	strcpy(pthread_data->pasos_param[0].ingredientes[2], "cebolla");
 
-	strcpy(pthread_data->pasos_param[1].accion, "mezclar");
+	//strcpy(pthread_data->pasos_param[1].accion, "mezclar");
 	strcpy(pthread_data->pasos_param[1].ingredientes[0], "ajo");
         strcpy(pthread_data->pasos_param[1].ingredientes[1], "perejil");
  	strcpy(pthread_data->pasos_param[1].ingredientes[2], "cebolla");
 	strcpy(pthread_data->pasos_param[1].ingredientes[3], "carne picada");
 	
-	strcpy(pthread_data->pasos_param[2].accion, "salar");
+	//strcpy(pthread_data->pasos_param[2].accion, "salar");
 	strcpy(pthread_data->pasos_param[2].ingredientes[0], "mezcla de medallon");
 	
-	strcpy(pthread_data->pasos_param[3].accion, "cocinar");
+	//strcpy(pthread_data->pasos_param[3].accion, "cocinar");
 	strcpy(pthread_data->pasos_param[3].ingredientes[0], "medallon");
 	
-	strcpy(pthread_data->pasos_param[4].accion, "hornear");
+	//strcpy(pthread_data->pasos_param[4].accion, "hornear");
 	strcpy(pthread_data->pasos_param[4].ingredientes[0], "panes");
 	
-	strcpy(pthread_data->pasos_param[5].accion, "cortar");
+	//strcpy(pthread_data->pasos_param[5].accion, "cortar");
 	strcpy(pthread_data->pasos_param[5].ingredientes[0], "tomate");
         strcpy(pthread_data->pasos_param[5].ingredientes[1], "lechuga");	
 	
