@@ -1,0 +1,20 @@
+cortar
+  ajo
+  cebolla
+  perejil
+mezclar
+  ajo
+  perejil
+  carne picada
+  cebolla
+salar
+  mezcla
+cocinar
+  medallon
+hornear
+  pan
+cortar2
+  lechuga
+  tomate
+armar
+  hamburguesa
