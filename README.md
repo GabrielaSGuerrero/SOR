@@ -2,4 +2,4 @@
 
 ## Trabajo Práctico de hilos y semáforos
 
-# Ir a Pseudocodigo Burguers.doc
+### Ir a Pseudocodigo Burguers(1).docx
